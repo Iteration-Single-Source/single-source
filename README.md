@@ -14,30 +14,39 @@ A web application to consolidate all your various online links onto a single, si
 
 ---
 
-## 🏁 Quick Start (For Developers)
+## 🏁 Quick Start Guide
 
-This guide assumes the project structure and dependencies are already set up.
+This guide is for developers who have cloned the project and want to run it locally.
 
 ### 1. Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18.x or later)
 - [npm](https://www.npmjs.com/)
-- [PostgreSQL](https://www.postgresql.org/) (running locally or a remote connection string)
+- [PostgreSQL](https://www.postgresql.org/) (a running local instance)
 
 ### 2. Installation
 
-Install dependencies for both client and server:
+1.  **Clone the repository:**
 
-```bash
-# From root directory
-cd server
-npm install
+    ```bash
+    git clone [YOUR_REPOSITORY_URL]
+    cd single-source
+    ```
 
-cd ../client
-npm install
-```
+2.  **Install server dependencies:**
 
-### 3\. Environment Setup (.env)
+    ```bash
+    cd server
+    npm install
+    ```
+
+3.  **Install client dependencies:**
+    ```bash
+    cd ../client
+    npm install
+    ```
+
+### 3. Environment Setup (.env)
 
 You must create `.env` files in both `/client` and `/server` directories. Use the `.env.example` files as a template.
 
@@ -58,26 +67,24 @@ VITE_API_BASE_URL="http://localhost:8080/api"
 
 ### 4\. Database Setup
 
-1.  Make sure your PostgreSQL server is running.
+1.  Ensure your PostgreSQL server is running.
 2.  Create your database (e.g., `single_source_dev`).
-3.  Run the database schema script found in `/docs/DATABASE.md` to create the `users` and `links` tables.
+3.  Run the full SQL script located in `/docs/DATABASE.md` to create the `users` and `links` tables.
 
 ### 5\. Running the Application
 
-You will need two terminals.
+You will need two separate terminals.
 
-- **Run Backend Server:**
+- **Run Backend Server (from `/server`):**
 
   ```bash
-  cd server
   npm run dev
   # Server (ESM) running on http://localhost:8080
   ```
 
-- **Run Frontend Client:**
+- **Run Frontend Client (from `/client`):**
 
   ```bash
-  cd client
   npm run dev
   # Client running on http://localhost:3000
   ```
@@ -86,9 +93,9 @@ You will need two terminals.
 
 ## 📂 Project Documentation
 
-For detailed information on project setup from scratch, API specifications, and database design, please see the `/docs` folder.
+For detailed project information, see the `/docs` folder:
 
-- **`/docs/SETTING_ENVIRONMENT.md`**: Full guide to setting up the project from an empty folder.
+- **`/docs/ACTION_PLAN.md`**: Step-by-step tasks and responsibilities.
 - **`/docs/API_SPEC.md`**: The API contract between frontend and backend.
-- **`/docs/DATABASE.md`**: Database schema and design.
-- **`/docs/ACTION_PLAN.md`**: Action plan for team.
+- **`/docs/DATABASE.md`**: Database schema and SQL setup script.
+- **`/docs/SETTING_ENVIRONMENT.md`**: (Reference only) The full guide to setting up this project from a completely empty folder.
