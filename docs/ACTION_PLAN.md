@@ -41,8 +41,8 @@ This document outlines the step-by-step tasks required to build, test, and compl
 
 ### 🏁 **Verification:**
 
-- `[ ]` (John) Test that Tailwind is working by adding a `className="text-red-500"` to `App.jsx`.
-- `[ ]` (John) Test the connection by visiting Nam's health check endpoint (`http://localhost:8080/api/health`) in the browser.
+- `[ ]` Test that Tailwind is working by adding a `className="text-red-500"` to `App.jsx`.
+- `[ ]` Test the connection by visiting Nam's health check endpoint (`http://localhost:8080/api/health`) in the browser.
 
 ---
 
