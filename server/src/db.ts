@@ -1,13 +1,10 @@
 import { Pool } from 'pg';
 import type { QueryResult } from 'pg';
-
-const PG_URI =
-  'postgresql://postgres.wbtmvjugltbpqvgrvtrt:cNidkazdoLqTic3N@aws-1-us-east-1.pooler.supabase.com:6543/postgres';
+import 'dotenv/config';
 
 const pool = new Pool({
-  connectionString: PG_URI,
+  connectionString: process.env.DATABASE_URL,
 });
-
 export default {
   query: (text: string, params: any[]): Promise<QueryResult<any>> => {
     return pool.query(text, params);
