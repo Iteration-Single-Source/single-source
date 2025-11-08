@@ -41,7 +41,7 @@ authController.registerUser = async (req, res, next) => {
     });
   } catch (error) {
     return next({
-      log: `authController.registerUser - Error: ${error}`,
+      log: `authController.registerUser - ${error}`,
       status: 500,
       message: { err: 'Failed to register user' },
     });
