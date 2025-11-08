@@ -26,9 +26,9 @@ This document outlines the step-by-step tasks required to build, test, and compl
 
 - `[x]` Follow `SETTING_ENVIRONMENT.md` to set up the `/server` directory (Node, ESM, Express, etc.).
 - `[x]` Install all server-side dependencies (`npm install` in `/server`).
-- `[ ]` Create the local PostgreSQL database (e.g., `single_source_dev`).
-- `[ ]` Run the SQL script from `DATABASE.md` to create `users` and `links` tables.
-- `[ ]` Create the `GET /api/health` test endpoint (as defined in `API_SPEC.md`).
+- `[x]` Create the local PostgreSQL database (e.g., `single_source_dev`).
+- `[x]` Run the SQL script from `DATABASE.md` to create `users` and `links` tables.
+- `[x]` Create the `GET /api/health` test endpoint (as defined in `API_SPEC.md`).
 - `[x]` Run `npm run dev` and confirm the server runs.
 
 ### Frontend:
