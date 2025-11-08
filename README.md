@@ -91,3 +91,4 @@ For detailed information on project setup from scratch, API specifications, and 
 - **`/docs/SETTING_ENVIRONMENT.md`**: Full guide to setting up the project from an empty folder.
 - **`/docs/API_SPEC.md`**: The API contract between frontend and backend.
 - **`/docs/DATABASE.md`**: Database schema and design.
+- **`/docs/ACTION_PLAN.md`**: Action plan for team.
