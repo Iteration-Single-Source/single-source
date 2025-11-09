@@ -10,6 +10,7 @@ interface AuthMiddleware {
   findUser: RequestHandler;
   verifyToken: RequestHandler;
   findUserByParams: RequestHandler;
+  verifyLinkOwnership: RequestHandler;
 }
 
 interface JwtPayload {
@@ -49,7 +50,7 @@ authMiddleware.checkUserExists = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `authMiddleware.checkUserExists: DB error - ${error}`,
+      log: `authMiddleware.checkUserExists: ${error}`,
       status: 500,
       message: { err: 'Error checking database' },
     });
@@ -66,7 +67,7 @@ authMiddleware.hashPassword = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `authMiddleware.hashPassword: Error hashing password - ${error}`,
+      log: `authMiddleware.hashPassword: ${error}`,
       status: 500,
       message: { err: 'Error processing registration' },
     });
@@ -92,7 +93,7 @@ authMiddleware.findUser = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `authMiddleware.findUser: DB error - ${error}`,
+      log: `authMiddleware.findUser: ${error}`,
       status: 500,
       message: { err: 'Error checking database' },
     });
@@ -122,7 +123,7 @@ authMiddleware.verifyToken = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `authMiddleware.verifyToken: Invalid token - ${error}`,
+      log: `authMiddleware.verifyToken: ${error}`,
       status: 403,
       message: { err: 'Forbidden: Invalid token' },
     });
@@ -151,9 +152,45 @@ authMiddleware.findUserByParams = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `authMiddleware.findUserByParams: DB error - ${error}`,
+      log: `authMiddleware.findUserByParams: ${error}`,
       status: 500,
       message: { err: 'Error checking database' },
+    });
+  }
+};
+
+authMiddleware.verifyLinkOwnership = async (req, res, next) => {
+  try {
+    const { userId } = res.locals;
+    const { linkId } = req.params;
+
+    const query = 'SELECT user_id FROM links WHERE id = $1';
+    const result = await db.query(query, [linkId]);
+
+    if (result.rows.length === 0) {
+      return next({
+        log: 'authMiddleware.verifyLinkOwnership: Link not found',
+        status: 404,
+        message: { err: 'Link not found' },
+      });
+    }
+
+    const ownerId = result.rows[0].user_id;
+
+    if (ownerId !== userId) {
+      return next({
+        log: 'authMiddleware.verifyLinkOwnership: User does not own link',
+        status: 403,
+        message: { err: 'Forbidden: You do not have permission' },
+      });
+    }
+
+    return next();
+  } catch (error) {
+    return next({
+      log: `authMiddleware.verifyLinkOwnership: ${error}`,
+      status: 500,
+      message: { err: 'Error verifying link ownership' },
     });
   }
 };
