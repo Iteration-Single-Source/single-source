@@ -2,6 +2,8 @@ import express from 'express';
 import authController from '../controllers/auth.controller';
 import authMiddleware from '../middleware/auth.middleware';
 import linkController from '../controllers/link.controller';
+import { validate } from '../middleware/validation.middleware';
+import { linkSchema } from '../schemas';
 
 const apiRouter = express.Router();
 
@@ -24,6 +26,30 @@ apiRouter.get(
   '/users/:username',
   authMiddleware.findUserByParams,
   linkController.getPublicProfile
+);
+
+apiRouter.get('/links', authMiddleware.verifyToken, linkController.getMyLinks);
+
+apiRouter.post(
+  '/links',
+  authMiddleware.verifyToken,
+  validate(linkSchema),
+  linkController.createLink
+);
+
+apiRouter.put(
+  '/links/:linkId',
+  authMiddleware.verifyToken,
+  validate(linkSchema),
+  authMiddleware.verifyLinkOwnership,
+  linkController.updateLink
+);
+
+apiRouter.delete(
+  '/links/:linkId',
+  authMiddleware.verifyToken,
+  authMiddleware.verifyLinkOwnership,
+  linkController.deleteLink
 );
 
 export default apiRouter;
