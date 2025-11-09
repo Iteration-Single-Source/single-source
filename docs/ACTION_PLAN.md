@@ -61,14 +61,14 @@ This document outlines the step-by-step tasks required to build, test, and compl
 ### John (Frontend):
 
 - `[x]` Build the `Register.jsx` page and form.
-- `[ ]` Build the `Login.jsx` page and form.
-- `[ ]` Create an `authSlice.js` in Redux.
+- `[x]` Build the `Login.jsx` page and form.
+- `[x]` Create an `authSlice.js` in Redux.
   - State: `user`, `token`, `isAuthenticated`, `isLoading`, `error`.
   - Reducers: `setCredentials`, `logOut`.
-- `[ ]` Create an API service function to call `POST /api/auth/register` and `POST /api/auth/login`.
-- `[ ]` On successful login/register, dispatch `setCredentials` to save the token/user to state and `localStorage`.
-- `[ ]` Create a `ProtectedRoute.jsx` component that checks `isAuthenticated` from the Redux store and redirects to `/login` if false.
-- `[ ]` Create a `Header.jsx` component that conditionally shows "Login/Register" or "Dashboard/Logout" buttons.
+- `[x]` Create an API service function to call `POST /api/auth/register` and `POST /api/auth/login`.
+- `[x]` On successful login/register, dispatch `setCredentials` to save the token/user to state and `localStorage`.
+- `[x]` Create a `ProtectedRoute.jsx` component that checks `isAuthenticated` from the Redux store and redirects to `/login` if false.
+- `[x]` Create a `Header.jsx` component that conditionally shows "Login/Register" or "Dashboard/Logout" buttons.
 
 ### 🏁 **Key Dependency:**
 
