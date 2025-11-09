@@ -1,47 +1,88 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import  api  from "../api/apiService";
-import type { RootState } from '..store';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import api from '../api/apiService';
+import { setCredentials } from '../features/auth/authSlice';
 
 export default function Login() {
-  return <h1> Login Page</h1>;
-}
-// Access dispatch function to send actions to redux
-const dispatch = useDispatch();
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-// Redirect after login
-const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-// Pull loading state from the redux auth slice
-const isLoading = useSelector((state: RootState) => state.auth);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
 
-//local state for input and error message
-const [form, setForm]= useState({
-username: "",
-password: "",
-confirm: "",
-});
-//handleSubmit runs when user clicks login
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setError("");
-}
-//make sure both fields have something before sending
+    if (!form.username || !form.password) {
+      return setError('Please fill in all fields.');
+    }
 
-//hit backend login route
+    try {
+      setLoading(true);
+      const data = await api.login(form.username, form.password);
+      dispatch(setCredentials(data));
+      localStorage.setItem('auth', JSON.stringify(data));
+      navigate('/dashboard');
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
 
-//expecting backend to send { user, token }
+      let errorMessage = 'Failed to login. Please try again.';
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
 
-//save login info in localStorage so it sticks after refresh 
+      setError(errorMessage);
+    }
+  };
 
-//update redux state with user + token
+  return (
+    <div className='max-w-md mx-auto p-6'>
+      <h1 className='text-2xl font-bold mb-4'>Login</h1>
 
-//send user to dashboard once logged in 
+      {error && (
+        <div className='bg-red-100 text-red-700 p-2 rounded mb-3 text-sm'>
+          {error}
+        </div>
+      )}
 
-//catch any issues like wrong password or server error
+      <form onSubmit={handleSubmit} className='space-y-3'>
+        <input
+          placeholder='Username'
+          value={form.username}
+          onChange={(e) => setForm({ ...form, username: e.target.value })}
+          className='border p-2 w-full rounded'
+        />
+        <input
+          placeholder='Password'
+          type='password'
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          className='border p-2 w-full rounded'
+        />
 
-//render
-export default function Login() {
-  return <h1> Login Page</h1>;
+        <button
+          type='submit'
+          disabled={loading}
+          className='w-full bg-blue-600 hover:bg-blue-700 text-white rounded p-2 disabled:opacity-60'
+        >
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+
+      <p className='text-sm mt-4'>
+        Don't have an account?{' '}
+        <Link to='/register' className='text-blue-600 underline'>
+          Create Account
+        </Link>
+      </p>
+    </div>
+  );
 }
