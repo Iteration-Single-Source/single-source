@@ -56,9 +56,21 @@ const login = (username: string, password: string): Promise<AuthResponse> => {
   });
 };
 
+export interface PublicProfileResponse {
+  name: string;
+  links: { title: string; url: string }[];
+}
+
+const getUserByUsername = async (username: string): Promise<PublicProfileResponse> => {
+  return request<PublicProfileResponse>(`/users/${encodeURIComponent(username)}`, {
+    method: "GET",
+  });
+};
+
 const apiService = {
   register,
   login,
+  getUserByUsername,
 };
 
 export default apiService;
