@@ -24,6 +24,7 @@ coverage/
 # --- Dependencies ---
 
 # Block node_modules in both client and server
+/node_modules/
 /server/node_modules/
 /client/node_modules/
 
