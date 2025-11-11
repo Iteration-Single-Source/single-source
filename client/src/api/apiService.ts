@@ -21,7 +21,7 @@ export interface PublicProfileResponse {
 
 // Define link type
 export interface Link {
-  id: string;
+  id: number;
   title: string;
   url: string;
 }
@@ -40,11 +40,14 @@ async function request<T>(endpoint: string, options: RequestInit): Promise<T> {
   }
 
   if (res.status === 204) return null as T;
-  return isJson ? res.json() : (await res.text() as unknown as T);
+  return isJson ? res.json() : ((await res.text()) as unknown as T);
 }
 
 // Register a new user
-const register = (username: string, password: string): Promise<AuthResponse> => {
+const register = (
+  username: string,
+  password: string
+): Promise<AuthResponse> => {
   return request('/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -61,9 +64,10 @@ const login = (username: string, password: string): Promise<AuthResponse> => {
   });
 };
 
-
 // Fetch a user's public profile by username
-const getUserByUsername = (username: string): Promise<PublicProfileResponse> => {
+const getUserByUsername = (
+  username: string
+): Promise<PublicProfileResponse> => {
   return request(`/users/${encodeURIComponent(username)}`, { method: 'GET' });
 };
 
@@ -106,7 +110,7 @@ const createLink = (title: string, url: string): Promise<Link> => {
 
 // Update an existing link
 const updateLink = (
-  id: string,
+  id: number,
   updates: Partial<{ title: string; url: string }>
 ): Promise<Link> => {
   const headers: HeadersInit = {
@@ -121,7 +125,7 @@ const updateLink = (
 };
 
 // Delete a link by ID
-const deleteLink = (id: string): Promise<void> => {
+const deleteLink = (id: number): Promise<void> => {
   return request(`/links/${id}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),

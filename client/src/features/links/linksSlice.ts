@@ -1,8 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import api from '../../api/apiService';
+import type { AppDispatch } from '../../app/store';
 
 // Define the shape of a single link
-export type Link = { id: string; title: string; url: string };
+export type Link = { id: number; title: string; url: string };
 
 // Define the overall state for links
 interface LinksState {
@@ -28,17 +29,17 @@ const linksSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-     // Handle failed requests
+    // Handle failed requests
     requestFail(state, action: PayloadAction<string | undefined>) {
       state.isLoading = false;
       state.error = action.payload || 'Something went wrong';
     },
-     // Mark request as done
+    // Mark request as done
     requestDone(state) {
       state.isLoading = false;
     },
 
-       // Replace entire link list
+    // Replace entire link list
     linksSet(state, action: PayloadAction<Link[]>) {
       state.items = action.payload;
       state.isLoading = false;
@@ -48,14 +49,14 @@ const linksSlice = createSlice({
       state.items.unshift(action.payload);
       state.isLoading = false;
     },
-      // Update an existing link by ID
+    // Update an existing link by ID
     linkUpdated(state, action: PayloadAction<Link>) {
       const idx = state.items.findIndex((l) => l.id === action.payload.id);
       if (idx !== -1) state.items[idx] = action.payload;
       state.isLoading = false;
     },
-       // Remove a link from the list by ID
-    linkDeleted(state, action: PayloadAction<string>) {
+    // Remove a link from the list by ID
+    linkDeleted(state, action: PayloadAction<number>) {
       state.items = state.items.filter((l) => l.id !== action.payload);
       state.isLoading = false;
     },
@@ -76,48 +77,65 @@ export const {
 export default linksSlice.reducer;
 
 // Fetch all links from the backend
-export const fetchLinks = () => async (dispatch: any) => {
+export const fetchLinks = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(requestStart());
-    const data = await api.getLinks();           
+    const data = await api.getLinks();
     dispatch(linksSet(data));
-  } catch (err: any) {
-    dispatch(requestFail(err?.message));
+  } catch (err) {
+    let message: string | undefined;
+    if (err instanceof Error) {
+      message = err.message;
+    }
+    dispatch(requestFail(message));
   }
 };
 
 // Add a new link
 export const addLink =
-  (payload: { title: string; url: string }) => async (dispatch: any) => {
+  (payload: { title: string; url: string }) =>
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(requestStart());
       const data = await api.createLink(payload.title, payload.url);
       dispatch(linkAdded(data));
-    } catch (err: any) {
-      dispatch(requestFail(err?.message));
+    } catch (err) {
+      let message: string | undefined;
+      if (err instanceof Error) {
+        message = err.message;
+      }
+      dispatch(requestFail(message));
     }
   };
 
-  // Update an existing link
+// Update an existing link
 export const updateLink =
-  (id: string, updates: Partial<{ title: string; url: string }>) =>
-  async (dispatch: any) => {
+  (id: number, updates: Partial<{ title: string; url: string }>) =>
+  async (dispatch: AppDispatch) => {
     try {
       dispatch(requestStart());
       const data = await api.updateLink(id, updates);
       dispatch(linkUpdated(data));
-    } catch (err: any) {
-      dispatch(requestFail(err?.message));
+    } catch (err) {
+      let message: string | undefined;
+      if (err instanceof Error) {
+        message = err.message;
+      }
+      dispatch(requestFail(message));
     }
   };
 
-  // Delete a link by ID
-export const deleteLink = (id: string) => async (dispatch: any) => {
+// Delete a link by ID
+export const deleteLink = (id: number) => async (dispatch: AppDispatch) => {
   try {
     dispatch(requestStart());
-    await api.deleteLink(id);                   
+    await api.deleteLink(id);
     dispatch(linkDeleted(id));
-  } catch (err: any) {
-    dispatch(requestFail(err?.message));
+  } catch (err) {
+    let message: string | undefined;
+    if (err instanceof Error) {
+      message = err.message;
+    }
+    dispatch(requestFail(message));
   }
 };
