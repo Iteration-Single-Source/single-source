@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useLocation, Link } from 'react-router-dom'; 
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import api from '../api/apiService';
 import { setCredentials } from '../features/auth/authSlice';
 
@@ -19,7 +19,7 @@ export default function Login() {
   const location = useLocation(); // current route/location
 
   // ⬅️ get path the user came from, or default to /dashboard
-  const from = (location.state as any)?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || '/dashboard';
 
   // Handle form submission and perform login
   const handleSubmit = async (e: FormEvent) => {
@@ -52,7 +52,7 @@ export default function Login() {
     }
   };
 
-    // Render login form and messaging
+  // Render login form and messaging
   return (
     <div className='max-w-md mx-auto p-6'>
       <h1 className='text-2xl font-bold mb-4'>Login</h1>
