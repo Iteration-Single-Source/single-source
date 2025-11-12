@@ -1,9 +1,10 @@
-import express from "express";
-import authController from "../controllers/auth.controller";
-import authMiddleware from "../middleware/auth.middleware";
-import linkController from "../controllers/link.controller";
-import { validate } from "../middleware/validation.middleware";
-import { linkSchema } from "../schemas";
+import express from 'express';
+import { updateTheme } from '../controllers/theme.controller';
+import authController from '../controllers/auth.controller';
+import authMiddleware from '../middleware/auth.middleware';
+import linkController from '../controllers/link.controller';
+import { validate } from '../middleware/validation.middleware';
+import { linkSchema } from '../schemas';
 
 const apiRouter = express.Router();
 
@@ -52,11 +53,9 @@ apiRouter.delete(
   linkController.deleteLink
 );
 
-//call middleware for updating theme
-console.log({
-  verifyToken: typeof authMiddleware.verifyToken,
-  findUserByParams: typeof authMiddleware.findUserByParams,
-  changeTheme: typeof authController.changeTheme,
-});
-
+apiRouter.patch(
+  '/users/theme',
+  authMiddleware.verifyToken,
+  updateTheme
+);
 export default apiRouter;

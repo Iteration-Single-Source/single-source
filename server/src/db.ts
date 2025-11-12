@@ -9,10 +9,12 @@ export default {
     return pool.query(text, params);
   },
 };
-pool.query("SELECT NOW()", (err, res) => {
+pool.query('SELECT current_database(), current_user, inet_server_addr()', (err, res) => {
   if (err) {
-    console.error("Connection failed:", err);
+    console.error('DB check failed:', err);
   } else {
-    console.log("Connected to Supabase! Server time:", res.rows[0]);
+    console.log('Connected to:', res.rows[0]);
   }
 });
+
+console.log("✅ Using connection string:", process.env.DATABASE_URL);

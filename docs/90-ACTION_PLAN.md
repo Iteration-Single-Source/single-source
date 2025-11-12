@@ -198,12 +198,14 @@ Priority: Highest.
 # Goal: Allow users to select and apply custom themes (colors/presets) stored per user.
 
 John (Backend)
-- [ ] Add `theme_preference` to users table (JSON or VARCHAR).
+
+- [x] Add `theme_preference` to users table (JSON or VARCHAR).
 - [ ] `PUT /api/users/theme (auth)` — save theme.
 - [ ] Include theme_preference in `GET /api/users/:username.`
 - [ ] Validate theme payload (hex/rgb, safe ranges).
 
 Avo (Frontend)
+
 - [ ] Add “Customize Theme” entry in nav → `/profile/customize`.
 - [ ] Build `ThemeCustomizer.jsx` with presets + live preview.
 - [ ] Persist via `PUT /api/users/theme`; store in Redux user slice.
@@ -222,7 +224,7 @@ John (Backend)
 
 Avo (Frontend)
 [ ] Build upload UI in `ProfileSettings.jsx` with preview + progress.
-[ ] POST image to /api/users/upload.
+[ ] POST image to `/api/users/upload`.
 [ ] Display current avatar on Dashboard & Public Profile.
 
 Key Dependency: Avo needs John’s upload endpoint + returned URL.
