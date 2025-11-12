@@ -182,16 +182,16 @@ Priority: Highest.
 
 ## Repo Setup
 
-- [ ] Pull the latest stable main branch from the original MVP.
-- [ ] Create a new branch for iteration work (e.g., iteration/custom-theme, iteration/profile-upload).
-- [ ] Review existing backend routes and database schema for compatibility.
-- [ ] Update docs: `README.md`, `.env.example`, setup notes.
+- [x] Pull the latest stable main branch from the original MVP.
+- [x] Create a new branch for iteration work (e.g., iteration/custom-theme, iteration/profile-upload).
+- [x] Review existing backend routes and database schema for compatibility.
+- [x] Update docs: `README.md`, `.env.example`, setup notes.
 
 # Verification
 
-- [ ] Run `/server` and `/client` concurrently with npm run dev.
-- [ ] Confirm registration, login, and dashboard work as-is.
-- [ ] Verify link CRUD works before changes.
+- [x] Run `/server` and `/client` concurrently with npm run dev.
+- [x] Confirm registration, login, and dashboard work as-is.
+- [x] Verify link CRUD works before changes.
 
 ## Phase 1: Custom Theme Feature
 
