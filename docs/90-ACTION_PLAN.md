@@ -217,9 +217,9 @@ Key Dependency: Avo’s save/load UI depends on John’s theme endpoints.
 # Goal: Let users upload/store a profile picture and show it on profile pages.
 
 John (Backend)
-- [ ] Configure multer with memoryStorage, size limits, and image-only MIME types.
-- [ ] Implement POST /api/users/upload (auth) to upload avatar to Supabase and save profile_image_url.
-- [ ] Return profile_image_url in GET /api/users/:username using the Supabase public URL.
+- [x] Configure multer with memoryStorage, size limits, and image-only MIME types.
+- [x] Implement POST /api/users/upload (auth) to upload avatar to Supabase and save profile_image_url.
+- [x] Return profile_image_url in GET /api/users/:username using the Supabase public URL.
 
 Avo (Frontend)
 - [ ] Build file-upload UI in ProfileSettings.jsx with preview.
