@@ -111,6 +111,16 @@ const createLink = (title: string, url: string): Promise<Link> => {
   });
 };
 
+const uploadProfilePicture = async (file: File): Promise<{avatarUrl: string} > => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  return request('/users/upload', {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: formData
+  });
+}
 // Update an existing link
 const updateLink = (
   id: number,
@@ -166,6 +176,7 @@ const apiService = {
   updateLink,
   deleteLink,
   updateTheme,
+  uploadProfilePicture
 };
 
 export default apiService;

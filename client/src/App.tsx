@@ -8,7 +8,6 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PublicProfile from "./pages/PublicProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ChangeTheme from "./components/changeTheme";
 
 export default function App() {
   const { isAuthenticated, user } = useSelector((s: RootState) => s.auth);

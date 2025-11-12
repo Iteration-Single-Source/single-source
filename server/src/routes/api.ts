@@ -1,5 +1,7 @@
 import express from "express";
 import { updateTheme } from "../controllers/theme.controller";
+import { uploadAvatar } from "../middleware/upload.middleware";
+import { uploadProfileImage } from "../controllers/user.controller";
 import authController from "../controllers/auth.controller";
 import authMiddleware from "../middleware/auth.middleware";
 import linkController from "../controllers/link.controller";
@@ -7,6 +9,7 @@ import { validate } from "../middleware/validation.middleware";
 import { linkSchema } from "../schemas";
 
 const apiRouter = express.Router();
+console.log("✅ server.ts loaded apiRouter import successfully");
 console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.post(
@@ -16,6 +19,7 @@ apiRouter.post(
   authMiddleware.hashPassword,
   authController.registerUser
 );
+console.log("✅ server.ts loaded apiRouter import successfully");
 console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.post(
@@ -27,6 +31,9 @@ apiRouter.post(
 console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.patch("/users/theme", authMiddleware.verifyToken, updateTheme);
+console.log("✅ server.ts loaded apiRouter import successfully");
+
+apiRouter.patch("/users/theme", authMiddleware.verifyToken, updateTheme);
 
 apiRouter.get(
   "/users/:username",
@@ -34,8 +41,10 @@ apiRouter.get(
   linkController.getPublicProfile
 );
 console.log("✅ server.ts loaded apiRouter import successfully");
+console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.get("/links", authMiddleware.verifyToken, linkController.getMyLinks);
+console.log("✅ server.ts loaded apiRouter import successfully");
 console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.post(
@@ -44,6 +53,7 @@ apiRouter.post(
   validate(linkSchema),
   linkController.createLink
 );
+console.log("✅ server.ts loaded apiRouter import successfully");
 console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.put(
@@ -54,6 +64,7 @@ apiRouter.put(
   linkController.updateLink
 );
 console.log("✅ server.ts loaded apiRouter import successfully");
+console.log("✅ server.ts loaded apiRouter import successfully");
 
 apiRouter.delete(
   "/links/:linkId",
@@ -63,5 +74,12 @@ apiRouter.delete(
 );
 
 console.log("✅ server.ts loaded UPDATE import successfully");
+
+apiRouter.post(
+  "/users/upload",
+  authMiddleware.verifyToken,
+  uploadAvatar.single("avatar"),
+  uploadProfileImage
+);
 
 export default apiRouter;
