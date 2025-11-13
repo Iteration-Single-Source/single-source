@@ -57,7 +57,6 @@ authController.loginUser = async (req, res, next) => {
     const user = res.locals.user;
 
     const ok = await bcrypt.compare(password, user.password_hash);
-
     if (!ok) {
       return next({
         log: "authMiddleware.checkUserExists: Invalid credentials",
@@ -65,6 +64,9 @@ authController.loginUser = async (req, res, next) => {
         message: { err: "Invalid credentials" },
       });
     }
+
+    const result = await db.query(query, [user.id]);
+    const fullUser = result.rows[0];
 
     const payload = { id: user.id };
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
