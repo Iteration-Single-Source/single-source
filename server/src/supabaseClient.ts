@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "dotenv/config";   
 import { createClient } from "@supabase/supabase-js";
 
@@ -8,4 +9,5 @@ if (!supabaseUrl || !supabaseServiceRoleKey) {
   throw new Error("Missing Supabase env vars");
 }
 
+export const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 export const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);

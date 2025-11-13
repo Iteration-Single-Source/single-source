@@ -6,8 +6,8 @@ interface User {
   id: number;
   username: string;
   theme_preference?: {
-    theme: "light" | "dark" | "calm"
-  }
+    theme: "light" | "dark" | "calm";
+  };
 }
 
 // Define authentication response type
@@ -111,6 +111,18 @@ const createLink = (title: string, url: string): Promise<Link> => {
   });
 };
 
+const uploadProfilePicture = async (
+  file: File
+): Promise<{ profileImageUrl: string }> => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  return request("/users/upload", {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: formData,
+  });
+};
 // Update an existing link
 const updateLink = (
   id: number,
@@ -166,6 +178,7 @@ const apiService = {
   updateLink,
   deleteLink,
   updateTheme,
+  uploadProfilePicture,
 };
 
 export default apiService;
