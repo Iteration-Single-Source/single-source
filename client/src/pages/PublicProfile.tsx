@@ -4,7 +4,11 @@ import apiService from "../api/apiService";
 import ChangeTheme from "../components/changeTheme";
 // Define link and profile DTO types for the public profile page
 type PublicLink = { title?: string; url: string };
-type PublicProfileDTO = { username: string; links: PublicLink[] };
+type PublicProfileDTO = {
+  username: string;
+  links: PublicLink[];
+  profile_image_url?: string;
+};
 
 // Local component state shape for loading/error/notFound/profile
 type ProfileState = {
@@ -43,7 +47,13 @@ export default function PublicProfile() {
 
       try {
         const data = await apiService.getUserByUsername(username);
-        if (!cancelled) patch({ profile: data, loading: false });
+        if (!cancelled) {
+          patch({ profile: data, loading: false });
+          // Load the profile picture from the database
+          if (data.profile_image_url) {
+            setAvatarUrl(data.profile_image_url);
+          }
+        }
       } catch (e) {
         if (cancelled) return;
         const msg = e instanceof Error ? e.message : "Failed to load profile.";
@@ -63,14 +73,14 @@ export default function PublicProfile() {
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setUploadError('Please upload an image file');
+    if (!file.type.startsWith("image/")) {
+      setUploadError("Please upload an image file");
       return;
     }
 
     // Validate file size (2MB max, matching your backend)
     if (file.size > 2 * 1024 * 1024) {
-      setUploadError('Image must be less than 2MB');
+      setUploadError("Image must be less than 2MB");
       return;
     }
 
@@ -79,11 +89,12 @@ export default function PublicProfile() {
 
     try {
       const response = await apiService.uploadProfilePicture(file);
-      setAvatarUrl(response.avatarUrl); // Update the displayed image
-      console.log('✅ Upload successful:', response.avatarUrl);
+      console.log("Backend response:", response); // ADD THIS LINE
+      setAvatarUrl(response.profileImageUrl); // Update the displayed image
+      console.log("✅ Upload successful:", response.avatarUrl);
     } catch (error) {
-      console.error('Upload error:', error);
-      setUploadError(error instanceof Error ? error.message : 'Upload failed');
+      console.error("Upload error:", error);
+      setUploadError(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setUploading(false);
     }
@@ -163,8 +174,8 @@ export default function PublicProfile() {
             p-2 rounded cursor-pointer 
             hover:bg-blue-200 dark:hover:bg-blue-800 calm:hover:bg-calm-primary-hover
             transition-colors
-            ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
-          {uploading ? 'Uploading...' : 'Upload Profile Picture'}
+            ${uploading ? "opacity-50 cursor-not-allowed" : ""}`}>
+          {uploading ? "Uploading..." : "Upload Profile Picture"}
         </label>
 
         {uploadError && (
@@ -174,14 +185,16 @@ export default function PublicProfile() {
         )}
       </div>
 
-      <h1 className="flex justify-center text-3xl font-bold mb-4 
+      <h1
+        className="flex justify-center text-3xl font-bold mb-4 
         text-gray-900 dark:text-gray-100 calm:text-calm-text">
         @{displayName}
       </h1>
-      
+
       {/* FIX: Correct conditional list rendering structure */}
       {links.length === 0 ? (
-        <p className="flex justify-center opacity-70 
+        <p
+          className="flex justify-center opacity-70 
           text-gray-700 dark:text-gray-300 calm:text-calm-text-muted">
           No links yet.
         </p>

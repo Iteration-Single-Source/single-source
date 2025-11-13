@@ -113,7 +113,7 @@ const createLink = (title: string, url: string): Promise<Link> => {
 
 const uploadProfilePicture = async (
   file: File
-): Promise<{ avatarUrl: string }> => {
+): Promise<{ profileImageUrl: string }> => {
   const formData = new FormData();
   formData.append("avatar", file);
 
